@@ -20,6 +20,7 @@ namespace BT01
         DataTable tblKhoa = new DataTable("KHOA");
         DataTable tblSinhVien = new DataTable("SINHVIEN");
         DataTable tblKetQua = new DataTable("KETQUA");
+        int stt = -1;
         public Form1()
         {
             InitializeComponent();
@@ -41,8 +42,30 @@ namespace BT01
             Tao_Cau_Truc_Cac_Bang();
             Moc_noi_quan_he_cac_Bang();
             Nhap_Lieu_cac_Bang();
+            Khoi_Tao_combo_khoa();
+            btnDau.PerformClick();
         }
 
+        private void Khoi_Tao_combo_khoa()
+        {
+         cboKhoa.DisplayMember = "TenKH";
+            cboKhoa.ValueMember= "MaKH";
+            cboKhoa.DataSource = "tblKhoa";
+        }
+        public void Gandulieu(int stt)
+        {
+            DataRow rsv = tblSinhVien.Rows[stt];
+            txtMasv.Text = rsv["Masv"].ToString();
+            txtHo.Text = rsv["Hosv"].ToString();
+            txtTen.Text = rsv["Tensv"].ToString();
+            ChkPhai.Checked = (Boolean)rsv["Phai"];
+            dtpNgaySinh.Text = rsv["NgaySinh"].ToString();
+            txtNoiSinh.Text = rsv["NoiSinh"].ToString();
+            cboKhoa.SelectedValue = rsv["Makh"].ToString() ;
+            txtHocBong.Text = rsv["HocBong"].ToString();
+
+            lblstt.Text=(stt+1)+"/"+tblSinhVien.Rows.Count;
+        }
         private void Nhap_Lieu_cac_Bang()
         {
             NhapLieu_tblSinhVien();
@@ -158,6 +181,32 @@ namespace BT01
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnDau_Click(object sender, EventArgs e)
+        {
+            stt = 0;
+            Gandulieu(stt);
+        }
+
+        private void btnCuoi_Click(object sender, EventArgs e)
+        {
+            stt = tblSinhVien.Rows.Count-1;
+            Gandulieu(stt);
+        }
+
+        private void btnTruoc_Click(object sender, EventArgs e)
+        {
+            if (stt == 0) return;
+            stt--;
+            Gandulieu(stt);
+        }
+
+        private void btnSau_Click(object sender, EventArgs e)
+        {
+            if(stt == tblSinhVien.Rows.Count-1) return;
+            stt++;
+            Gandulieu(stt);
         }
     }
 }
